@@ -1,10 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 export default styles = StyleSheet.create({
-    container: {
+    pressable: {
         flex: 1,
-        padding: 10,
-        backgroundColor: '#121212',
     },
     gridItem: {
         flex: 1,
@@ -37,17 +35,5 @@ export default styles = StyleSheet.create({
     score: {
         fontSize: 12,
         color: '#d4af37',
-    },
-    columnWrapper: {
-        justifyContent: 'space-between',
-    },
-    header: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        marginVertical: 10,
-    },
-    errorText: {
-        color: 'red',
-        fontSize: 16,
     },
 });

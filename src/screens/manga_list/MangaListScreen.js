@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { Text, View, FlatList, ActivityIndicator, Button, Image } from 'react-native';
+import { Text, View, FlatList, ActivityIndicator, Image } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { styles } from './style';
-import { FIREBASE_AUTH } from '../../FirebaseConfig';
+import styles from './style';
 import { fetchManga } from '../../redux/slices/mangaSlice';
+import MangaComponent from '../../components/manga_component/index';
 
-export const MangaListScreen = () => {
+export default function MangaListScreen() {
     const dispatch = useDispatch();
     const mangaList = useSelector((state) => state.manga.mangaList);
     const status = useSelector((state) => state.manga.status);
@@ -13,10 +13,6 @@ export const MangaListScreen = () => {
     const hasNextPage = useSelector((state) => state.manga.hasNextPage);
     const error = useSelector((state) => state.manga.error);
     const currentPage = useSelector((state) => state.manga.currentPage);
-
-    const handleLogout = () => {
-        FIREBASE_AUTH.signOut();
-    };
 
     useEffect(() => {
         dispatch(fetchManga(1));
@@ -28,23 +24,26 @@ export const MangaListScreen = () => {
         }
     };
 
-    const renderItem = ({ item }) => (
-        <View style={styles.gridItem}>
-            <Image source={{ uri: item.images.jpg.image_url }} style={styles.image} />
-            <Text style={styles.title}>{item.title}</Text>
-        </View>
-    );
+    const renderItem = ({ item }) => <MangaComponent item={item} />;
+    // <View style={styles.gridItem}>
+    //     <Image source={{ uri: item.images.webp.image_url }} style={styles.image} />
+    //     <View style={styles.textContainer}>
+    //         <Text numberOfLines={1} style={styles.title}>{item.title}</Text>
+    //         <Text style={styles.score}>⭐ {item.score}</Text>
+    //     </View>
+    // </View>
+
 
     return (
         <View style={styles.container}>
-            <Button title="Logout" onPress={handleLogout} />
             {status === 'loading' && <ActivityIndicator size="large" color="#000" />}
             {error && <Text style={styles.errorText}>Error: {error}</Text>}
             <FlatList
                 data={mangaList}
                 renderItem={renderItem}
-                numColumns={4}
-                columnWrapperStyle={styles.columnWrapper}
+                keyExtractor={(item) => item.mal_id.toString()}
+                numColumns={3}
+                columnWrapperStyle={{ justifyContent: 'space-between' }}
                 onEndReached={loadMoreManga}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={isFetchingMore ? <ActivityIndicator size="small" color="#000" /> : null}

@@ -20,8 +20,8 @@ const mangaSlice = createSlice({
     name: 'manga',
     initialState: {
         mangaList: [],
-        status: 'idle', // initial load status
-        isFetchingMore: false, // status for pagination
+        status: 'idle',
+        isFetchingMore: false,
         error: null,
         hasNextPage: true,
         currentPage: 1,
@@ -31,9 +31,9 @@ const mangaSlice = createSlice({
         builder
             .addCase(fetchManga.pending, (state, action) => {
                 if (state.currentPage === 1) {
-                    state.status = 'loading'; // Initial load
+                    state.status = 'loading';
                 } else {
-                    state.isFetchingMore = true; // Pagination load
+                    state.isFetchingMore = true;
                 }
             })
             .addCase(fetchManga.fulfilled, (state, action) => {
