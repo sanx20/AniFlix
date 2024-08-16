@@ -1,9 +1,44 @@
-import { View, Text } from 'react-native';
+import React, { useEffect } from 'react';
+import { Text, View, FlatList, ActivityIndicator } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchAnime } from '../../redux/slices/AnimeSlice';
+import styles from './style';
+import AnimeComponent from '../../components/anime_component/index';
 
 export default function AnimeListScreen() {
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchAnime(1));
+    }, [dispatch]);
+
+    const animeList = useSelector((state) => state.anime.animeList);
+    const status = useSelector((state) => state.anime.status);
+    const isFetchingMore = useSelector((state) => state.anime.isFetchingMore);
+    const hasNextPage = useSelector((state) => state.anime.hasNextPage);
+    const error = useSelector((state) => state.anime.error);
+    const currentPage = useSelector((state) => state.anime.currentPage);
+
+    const renderItem = ({ item }) => <AnimeComponent item={item} />;
+
+    const loadMoreAnime = () => {
+        if (hasNextPage && !isFetchingMore) {
+            dispatch(fetchAnime(currentPage + 1));
+        }
+    };
+
     return (
-        <View>
-            <Text>Anime List Screen</Text>
+        <View style={styles.container}>
+            {status === 'loading' && <ActivityIndicator size="large" color="#000" />}
+            {error && <Text style={styles.errorText}>Error: {error}</Text>}
+            <FlatList
+                data={animeList}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.mal_id.toString()}
+                onEndReached={loadMoreAnime}
+                onEndReachedThreshold={0.5}
+                ListFooterComponent={isFetchingMore ? <ActivityIndicator size="small" color="#000" /> : null}
+            />
         </View>
     );
 };

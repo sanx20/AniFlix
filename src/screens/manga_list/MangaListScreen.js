@@ -25,13 +25,6 @@ export default function MangaListScreen() {
     };
 
     const renderItem = ({ item }) => <MangaComponent item={item} />;
-    // <View style={styles.gridItem}>
-    //     <Image source={{ uri: item.images.webp.image_url }} style={styles.image} />
-    //     <View style={styles.textContainer}>
-    //         <Text numberOfLines={1} style={styles.title}>{item.title}</Text>
-    //         <Text style={styles.score}>⭐ {item.score}</Text>
-    //     </View>
-    // </View>
 
 
     return (

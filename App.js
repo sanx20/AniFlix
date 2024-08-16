@@ -13,6 +13,7 @@ import { FIREBASE_AUTH } from './src/FirebaseConfig';
 import { Provider } from 'react-redux';
 import { store } from './src/redux/store';
 import Icon from 'react-native-vector-icons/Ionicons';
+import AnimeDetailScreen from './src/screens/anime/AnimeDetailScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -63,15 +64,19 @@ export default function App() {
         <Stack.Navigator initialRouteName="Login">
           {user ? (
             <>
-              {/* Main stack, including the tab navigator and other screens */}
               <Stack.Screen name="Main" component={TabNavigator} options={{
                 headerStyle: { backgroundColor: 'black' },
-                headerTitle: 'Manga',
+                headerTitle: '',
                 headerTintColor: '#fff',
               }} />
               <Stack.Screen name="MangaDetail" component={MangaDetailScreen} options={{
                 headerStyle: { backgroundColor: 'black' },
                 headerTitle: 'Manga Detail',
+                headerTintColor: '#fff',
+              }} />
+              <Stack.Screen name="AnimeDetail" component={AnimeDetailScreen} options={{
+                headerStyle: { backgroundColor: 'black' },
+                headerTitle: 'Anime Detail',
                 headerTintColor: '#fff',
               }} />
             </>
