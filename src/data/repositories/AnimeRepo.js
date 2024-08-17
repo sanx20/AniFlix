@@ -26,4 +26,17 @@ export class AnimeRepo {
             throw new Error('Error fetching anime characters: ' + error.message);
         }
     }
+
+    static async fetchAnimeById(animeId) {
+        try {
+            const response = await fetch(AppConstant.getAnimeById + '/' + animeId + '/full');
+            if (!response.ok) {
+                throw new Error('Error fetching anime data');
+            }
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            throw new Error('Error fetching anime data: ' + error.message);
+        }
+    }
 }

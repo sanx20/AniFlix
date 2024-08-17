@@ -6,28 +6,7 @@ export async function saveDataToFirebase(item) {
         const user = FIREBASE_AUTH.currentUser;
         if (user) {
             const userSavedRef = collection(FIREBASE_DB, 'users', user.uid, 'favorites');
-            await addDoc(userSavedRef, {
-                mal_id: item.mal_id || null,
-                title: item.title || 'N/A',
-                title_english: item.title_english || 'N/A',
-                synopsis: item.synopsis || 'No synopsis available',
-                score: item.score || null,
-                rank: item.rank || null,
-                popularity: item.popularity || null,
-                members: item.members || null,
-                favorites: item.favorites || null,
-                published: item.published?.string || 'N/A',
-                genres: item.genres?.map((genre) => genre.name) || [],
-                authors: item.authors?.map((author) => author.name) || [],
-                background: item.background || null,
-                images: {
-                    webp: {
-                        image_url: item.images?.webp?.image_url || 'https://example.com/default-image.png',
-                        large_image_url: item.images?.webp?.large_image_url || 'https://example.com/default-image.png',
-                    }
-                },
-                type: item.type || 'Unknown'
-            });
+            await addDoc(userSavedRef, item); // Save the entire item object
         } else {
             alert('Error', 'You need to be logged in to save data.');
         }

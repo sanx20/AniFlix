@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, StyleSheet, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -9,6 +9,8 @@ import AnimeListScreen from './src/screens/anime_list/AnimeListScreen';
 import FavoritesScreen from './src/screens/favorites/FavoritesScreen';
 import MangaDetailScreen from './src/screens/manga/MangaDetailScreen';
 import AnimeDetailScreen from './src/screens/anime/AnimeDetailScreen';
+import ReviewsListScreen from './src/screens/reviews_list/ReviewsListScreen';
+import ReviewsDetailScreen from './src/screens/review/ReviewsDetailScreen';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FIREBASE_AUTH } from './src/FirebaseConfig';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,21 +33,54 @@ const TabNavigator = () => {
             iconName = 'book-outline';
           } else if (route.name === 'Anime') {
             iconName = 'tv-outline';
+          } else if (route.name === 'Reviews') {
+            iconName = 'star-outline';
           } else if (route.name === 'Favorites') {
             iconName = 'heart-outline';
           }
-
           return <Icon name={iconName} size={size} color={color} />;
         },
         tabBarActiveTintColor: 'white',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: { backgroundColor: 'black' },
-        headerShown: false,
       })}
     >
-      <Tab.Screen name="Manga" component={MangaListScreen} />
-      <Tab.Screen name="Anime" component={AnimeListScreen} />
-      <Tab.Screen name="Favorites" component={FavoritesScreen} />
+      <Tab.Screen name="Manga" component={MangaListScreen} options={{
+        headerStyle: { backgroundColor: 'black' },
+        headerTitle: 'AniFlix',
+        headerTintColor: '#BB86FC',
+        headerTitleStyle: { fontWeight: 'bold', },
+      }} />
+      <Tab.Screen name="Anime" component={AnimeListScreen} options={{
+        headerStyle: { backgroundColor: 'black' },
+        headerTitle: 'AniFlix',
+        headerTintColor: '#BB86FC',
+        headerTitleStyle: { fontWeight: 'bold', },
+      }} />
+      <Tab.Screen name="Reviews" component={ReviewsListScreen} options={{
+        headerStyle: { backgroundColor: 'black' },
+        headerTitle: 'AniFlix',
+        headerTintColor: '#BB86FC',
+        headerTitleStyle: { fontWeight: 'bold', },
+      }} />
+      <Tab.Screen name="Favorites" component={FavoritesScreen}
+        options={{
+          headerStyle: { backgroundColor: 'black' },
+          headerTitle: 'AniFlix',
+          headerTintColor: '#BB86FC',
+          headerTitleStyle: { fontWeight: 'bold', },
+          headerRight: () => (
+            <Button
+              onPress={() => {
+                FIREBASE_AUTH.signOut();
+              }}
+              style={{ margnRight: 10 }}
+              title="Sign out"
+              color="#BB86FC"
+            />
+          ),
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -86,12 +121,7 @@ const App = () => {
             <Stack.Screen
               name="Main"
               component={TabNavigator}
-              options={{
-                headerStyle: { backgroundColor: 'black' },
-                headerTitle: 'AniFlix',
-                headerTintColor: '#BB86FC',
-                headerTitleStyle: { fontWeight: 'bold', },
-              }}
+              options={{ headerShown: false, headerTitle: '' }}
             />
             <Stack.Screen
               name="MangaDetail"
@@ -107,8 +137,17 @@ const App = () => {
               component={AnimeDetailScreen}
               options={{
                 headerStyle: { backgroundColor: 'black' },
-                headerTitle: 'AniFlix',
-                headerTintColor: '##BB86FC',
+                headerTitle: 'Anime Detail',
+                headerTintColor: '#fff',
+              }}
+            />
+            <Stack.Screen
+              name="ReviewDetail"
+              component={ReviewsDetailScreen}
+              options={{
+                headerStyle: { backgroundColor: 'black' },
+                headerTitle: 'Review Detail',
+                headerTintColor: '#fff',
               }}
             />
           </>

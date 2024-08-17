@@ -1,22 +1,23 @@
 import React, { useEffect } from 'react';
-import { Text, View, FlatList, ActivityIndicator, Image } from 'react-native';
+import { Text, View, FlatList, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './style';
 import { fetchManga } from '../../redux/slices/mangaSlice';
 import MangaComponent from '../../components/manga_component/index';
+import styles from './style';
 
 export default function MangaListScreen() {
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(fetchManga(1));
+    }, [dispatch]);
+
     const mangaList = useSelector((state) => state.manga.mangaList);
     const status = useSelector((state) => state.manga.status);
     const isFetchingMore = useSelector((state) => state.manga.isFetchingMore);
     const hasNextPage = useSelector((state) => state.manga.hasNextPage);
     const error = useSelector((state) => state.manga.error);
     const currentPage = useSelector((state) => state.manga.currentPage);
-
-    useEffect(() => {
-        dispatch(fetchManga(1));
-    }, [dispatch]);
 
     const loadMoreManga = () => {
         if (hasNextPage && !isFetchingMore) {
@@ -26,6 +27,7 @@ export default function MangaListScreen() {
 
     const renderItem = ({ item }) => <MangaComponent item={item} />;
 
+    const keyExtractor = (item, index) => `${item.mal_id}-${index}`;
 
     return (
         <View style={styles.container}>
@@ -34,7 +36,8 @@ export default function MangaListScreen() {
             <FlatList
                 data={mangaList}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.mal_id.toString() + item.title + Date.now().toString()} numColumns={3}
+                keyExtractor={keyExtractor}
+                numColumns={3}
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 onEndReached={loadMoreManga}
                 onEndReachedThreshold={0.5}
@@ -42,4 +45,4 @@ export default function MangaListScreen() {
             />
         </View>
     );
-};
+}

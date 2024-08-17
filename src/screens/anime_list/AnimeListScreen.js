@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Text, View, FlatList, ActivityIndicator } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAnime } from '../../redux/slices/AnimeSlice';
@@ -7,6 +7,7 @@ import AnimeComponent from '../../components/anime_component/index';
 
 export default function AnimeListScreen() {
     const dispatch = useDispatch();
+    const uniqueKeys = useRef(new Set());
 
     useEffect(() => {
         dispatch(fetchAnime(1));
@@ -27,6 +28,12 @@ export default function AnimeListScreen() {
         }
     };
 
+    const getKey = (item, index) => {
+        const key = `${item.mal_id}-${index}`;
+        uniqueKeys.current.add(key);
+        return key;
+    };
+
     return (
         <View style={styles.container}>
             {status === 'loading' && <ActivityIndicator size="large" color="#BB86FC" />}
@@ -34,7 +41,7 @@ export default function AnimeListScreen() {
             <FlatList
                 data={animeList}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.mal_id.toString() + item.title + Date.now().toString()}
+                keyExtractor={(item, index) => getKey(item, index)}
                 onEndReached={loadMoreAnime}
                 onEndReachedThreshold={0.5}
                 ListFooterComponent={isFetchingMore ? <ActivityIndicator size="small" color="#BB86FC" /> : null}
