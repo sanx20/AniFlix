@@ -29,17 +29,16 @@ export default function MangaListScreen() {
 
     return (
         <View style={styles.container}>
-            {status === 'loading' && <ActivityIndicator size="large" color="#000" />}
+            {status === 'loading' && <ActivityIndicator size="large" color="#BB86FC" />}
             {error && <Text style={styles.errorText}>Error: {error}</Text>}
             <FlatList
                 data={mangaList}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.mal_id.toString()}
-                numColumns={3}
+                keyExtractor={(item) => item.mal_id.toString() + item.title + Date.now().toString()} numColumns={3}
                 columnWrapperStyle={{ justifyContent: 'space-between' }}
                 onEndReached={loadMoreManga}
                 onEndReachedThreshold={0.5}
-                ListFooterComponent={isFetchingMore ? <ActivityIndicator size="small" color="#000" /> : null}
+                ListFooterComponent={isFetchingMore ? <ActivityIndicator size="small" color="#BB86FC" /> : null}
             />
         </View>
     );

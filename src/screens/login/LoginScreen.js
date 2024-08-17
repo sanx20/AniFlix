@@ -1,7 +1,10 @@
-import { View, TextInput, Button, ActivityIndicator, Text, StyleSheet } from 'react-native';
 import React, { useState } from 'react';
-import { FIREBASE_AUTH } from '../../FirebaseConfig.js';
+import { View, TextInput, Button, ActivityIndicator, Text, TouchableOpacity, Image, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import { FIREBASE_AUTH } from '../../FirebaseConfig';
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth';
+import styles from './style';
+
+const logo = require('../../../assets/AniFlix_logo.png');
 
 export default function LoginScreen() {
     const [email, setEmail] = useState('');
@@ -33,54 +36,49 @@ export default function LoginScreen() {
     };
 
     return (
-        <View style={styles.container}>
-            <TextInput
-                placeholder="Email"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-                style={styles.input}
-            />
-            <TextInput
-                placeholder="Password"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry
-                style={styles.input}
-            />
-            {!loading && (
-                <>
-                    <Button
-                        title={isSignUp ? "Sign Up" : "Sign In"}
-                        onPress={isSignUp ? handleSignUp : handleSignIn}
+        <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        >
+            <ScrollView contentContainerStyle={styles.scrollContainer} keyboardShouldPersistTaps="handled">
+                <View style={styles.innerContainer}>
+                    <Image source={logo} style={styles.logo} />
+                    <Text style={styles.header}>{isSignUp ? "Create an Account" : "Sign In"}</Text>
+                    <TextInput
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={setEmail}
+                        keyboardType="email-address"
+                        autoCapitalize="none"
+                        style={styles.input}
+                        placeholderTextColor="#B0B0B0"
                     />
-                    <Text style={styles.toggleText} onPress={() => setIsSignUp(!isSignUp)}>
-                        {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
-                    </Text>
-                </>
-            )}
-            {loading && <ActivityIndicator size="large" color="#0000ff" />}
-        </View>
+                    <TextInput
+                        placeholder="Password"
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry
+                        style={styles.input}
+                        placeholderTextColor="#B0B0B0"
+                    />
+                    {!loading ? (
+                        <>
+                            <Button
+                                title={isSignUp ? "Sign Up" : "Sign In"}
+                                onPress={isSignUp ? handleSignUp : handleSignIn}
+                                color="#BB86FC"
+                            />
+                            <TouchableOpacity onPress={() => setIsSignUp(!isSignUp)}>
+                                <Text style={styles.toggleText}>
+                                    {isSignUp ? "Already have an account? Sign In" : "Don't have an account? Sign Up"}
+                                </Text>
+                            </TouchableOpacity>
+                        </>
+                    ) : (
+                        <ActivityIndicator size="large" color="#BB86FC" />
+                    )}
+                </View>
+            </ScrollView>
+        </KeyboardAvoidingView>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        padding: 16,
-    },
-    input: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        marginBottom: 12,
-        paddingHorizontal: 8,
-    },
-    toggleText: {
-        color: 'blue',
-        marginTop: 16,
-        textAlign: 'center',
-    },
-});

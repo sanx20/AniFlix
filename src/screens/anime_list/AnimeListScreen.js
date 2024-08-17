@@ -29,15 +29,15 @@ export default function AnimeListScreen() {
 
     return (
         <View style={styles.container}>
-            {status === 'loading' && <ActivityIndicator size="large" color="#000" />}
+            {status === 'loading' && <ActivityIndicator size="large" color="#BB86FC" />}
             {error && <Text style={styles.errorText}>Error: {error}</Text>}
             <FlatList
                 data={animeList}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.mal_id.toString()}
+                keyExtractor={(item) => item.mal_id.toString() + item.title + Date.now().toString()}
                 onEndReached={loadMoreAnime}
                 onEndReachedThreshold={0.5}
-                ListFooterComponent={isFetchingMore ? <ActivityIndicator size="small" color="#000" /> : null}
+                ListFooterComponent={isFetchingMore ? <ActivityIndicator size="small" color="#BB86FC" /> : null}
             />
         </View>
     );

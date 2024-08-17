@@ -22,12 +22,21 @@ export default styles = StyleSheet.create({
     infoContainer: {
         paddingHorizontal: 16,
     },
+    titleContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 8,
+    },
     title: {
         fontSize: 28,
         fontWeight: 'bold',
         color: '#FFFFFF',
         textAlign: 'center',
-        marginBottom: 8,
+        flex: 1,
+    },
+    heartIcon: {
+        marginLeft: 10,
     },
     subtitle: {
         fontSize: 18,

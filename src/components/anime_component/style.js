@@ -5,19 +5,19 @@ export default styles = StyleSheet.create({
         flexDirection: 'row',
         padding: 10,
         marginBottom: 10,
-        backgroundColor: '#1F1F1F', // Dark background color
+        backgroundColor: '#1F1F1F',
         borderRadius: 8,
-        elevation: 5, // Adds more shadow for Android
-        shadowColor: '#000', // Adds shadow for iOS
-        shadowOffset: { width: 0, height: 4 }, // Increased shadow offset for depth effect
-        shadowOpacity: 0.4, // Increased shadow opacity for stronger effect
-        shadowRadius: 6, // Increased shadow radius for softer shadow edges
+        elevation: 5,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.4,
+        shadowRadius: 6,
     },
     image: {
         width: 100,
         height: 150,
         borderRadius: 8,
-        marginRight: 15, // More space between image and text
+        marginRight: 15,
     },
     infoContainer: {
         flex: 1,
@@ -26,17 +26,17 @@ export default styles = StyleSheet.create({
     title: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#E5E5E5', // Light color for text
+        color: '#E5E5E5',
         marginBottom: 5,
     },
     subtitle: {
         fontSize: 14,
-        color: '#BBBBBB', // Subtle grey color for subtitle
+        color: '#BBBBBB',
         marginBottom: 5,
     },
     detailText: {
         fontSize: 14,
-        color: '#BBBBBB', // Subtle grey color for detail text
+        color: '#BBBBBB',
         marginBottom: 5,
     },
 });

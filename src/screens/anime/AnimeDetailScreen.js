@@ -28,6 +28,7 @@ export default function AnimeDetailScreen({ route }) {
         );
     };
 
+
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
